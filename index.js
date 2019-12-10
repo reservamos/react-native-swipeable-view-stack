@@ -61,9 +61,11 @@ class SwipeableViewStack extends PureComponent<SwipeableViewStackProps, Swipeabl
     this.createviewPanResponder();
   }
 
-  componentDidUpdate(){
-    this.dataArray = this.props.data;
-    // this.createviewPanResponder();
+  componentDidUpdate({ data: prevData }){
+    if (this.props.data && this.props.data.length !== prevData.length){
+      this.dataArray = this.props.data;
+      this.createviewPanResponder();
+    }
   }
 
   onItemClicked: Function;
