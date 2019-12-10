@@ -79,6 +79,8 @@ class SwipeableViewStack extends PureComponent<SwipeableViewStackProps, Swipeabl
     }
 
     if (prevData.some(isDif)) {
+      console.log('updating shit lib');
+      
       this.dataArray = data;
       this.createviewPanResponder();
     }
