@@ -22,7 +22,7 @@ type SwipeableViewStackProps = {
   onSwipe?: Function,
   initialSelectedIndex?: number,
   data: Array<Object>;
-  onItemClicked: Function,
+  onItemClicked?: Function,
   renderItem: Function,
   stackSpacing?: number,
 };
@@ -87,7 +87,11 @@ class SwipeableViewStack extends PureComponent<SwipeableViewStackProps, Swipeabl
 
   onItemClicked: Function;
   onItemClicked() {
-    this.props.onItemClicked(this.dataArray[ this.getLastViewIndex() ]);
+    const { onItemClicked } = this.props;
+
+    if (onItemClicked) {
+      onItemClicked(this.dataArray[ this.getLastViewIndex() ]);
+    }
   }
 
   createviewPanResponder: Function;
@@ -96,7 +100,9 @@ class SwipeableViewStack extends PureComponent<SwipeableViewStackProps, Swipeabl
       onStartShouldSetPanResponder: () => true,
       onStartShouldSetPanResponderCapture: () => true,
       onMoveShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponderCapture: () => true,
+      onMoveShouldSetPanResponderCapture: (event, { dx, dy }) =>  {
+        return (Math.abs(dx) > touchThreshold) || (Math.abs(dy) > touchThreshold); 
+      },
       onPanResponderMove: ( event, gestureState ) => {
         this.state.viewPan.setValue( { x: gestureState.dx, y: this.state.viewPan.y } );
       },
